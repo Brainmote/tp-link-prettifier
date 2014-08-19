@@ -1,6 +1,8 @@
-tp-link-prettifier
+TP-Link Prettifier
 ==================
 
-This script is used to prettify the "Wireless Station Status" page for TP-Link TD-W8970 router.
+This userscript is used to prettify the _Wireless_Station_Status_ page of a TP-Link TD-W8970 router. In particular, with you will see the description near the MAC address for devices you already registered in the Wireless MAC Filtering page. See https://goo.gl/pBjoLY for a snapshot example.
 
-In particular, with this script you can see the description near the MAC address for devices you already registered in the Wireless MAC Filtering page. (you can see a snapshot here https://goo.gl/pBjoLY). Tested on Firmware version: 0.6.0 2.8 v000c.0 Build 130828 Rel.38099n and Hardware version: TD-W8970 v1 00000000
+To install and use this userscript, you can use Chrome and a tool like Tampermonkey (https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo).
+
+This userscript was developed and tested with a TP-Link TD-W8970 router, Firmware version: 0.6.0 2.8 v000c.0 Build 130828 Rel.38099n, Hardware version: TD-W8970 v1 00000000
