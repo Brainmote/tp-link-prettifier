@@ -23,33 +23,57 @@ $(document).ready(
                     //Use a little timeout to let the list to be loaded
                     setTimeout( 
                         function() {
-                            //Native call to the router to get the registered mac list
+                            //Native call to the router to get the registered mac list and description
                             unsafeWindow.$.io( "./cgi?5", false, function( response ) {
                                 //Read the response and prepare a clean MAC list (key = mac address, value = description)
                                 response = response.replace( /X_TPLINK_Description=/g, "" );
                                 response = response.replace( /X_TPLINK_MACAddress=/g, "" );
                                 var responseArray = response.split( '\n' );
-                                var macList = {};
+                                var descList = {}, descListSize = 0;
                                 for( var i = 2; i < responseArray.length; i+=4 ){
-                                    macList[responseArray[i]] = responseArray[i+1];
+                                    descList[responseArray[i]] = responseArray[i+1];
                                 }
-                                //Change the table headers widths
-                                var largeColumnWidth = "35%";
-                                var smallColumnWidth = "20%";
-                                var header = $( ".T.T_macaddr" );
-                                header.attr( "width", largeColumnWidth );
-                                header.text( "Description (MAC Address)" );
-                                $( "#t_curstat1" ).attr( "width", smallColumnWidth );
-                                $( "#t_rxpkts1" ).attr( "width", smallColumnWidth );
-                                //List all MAC addresses and show description
-                                $( "td[width='20%']" ).each( function( index, element ) {
-                                    element.width = largeColumnWidth;
-                                    if ( macList[element.innerHTML] ) {
-                                        element.innerHTML = macList[element.innerHTML] + " (" + element.innerHTML + ")";
+                                //Native call to the router to get IP and hostname associated to the mac
+                                unsafeWindow.$.io( "./cgi?5", false, function( response ) {
+                                    //Read the response and prepare a clean MAC list (key = mac address, value = description)
+                                    response = response.replace( /MACAddress=/g, "" );
+                                    response = response.replace( /hostName=/g, "" );
+                                    response = response.replace( /IPAddress=/g, "" );
+                                    var responseArray = response.split( '\n' );
+                                    var hostnameList = {}, ipList = {};
+                                    for( var i = 2; i < responseArray.length; i+=5 ){
+                                        hostnameList[responseArray[i]] = responseArray[i+1];
+                                        ipList[responseArray[i]] = responseArray[i+2];
                                     }
-                                });
-                                //Modify widths of other tds
-                                $( "td[width='25%']" ).each( function( index, element ) { element.width = smallColumnWidth; });
+                                    //Prepare data for the prettify function
+                                    hostList = {};
+                                    Object.keys(ipList).
+                                    forEach(function(element, index, array){
+                                        hostList[element] = {};
+                                        hostList[element]["IP"] = ipList[element];
+                                        hostList[element]["HOSTNAME"] = hostnameList[element];
+                                        hostList[element]["DESC"] = descList[element];
+                                    });
+                                    //List all MAC addresses and insert detailed info
+                                    $( "td[width='20%']" ).each( function( index, element ) {
+                                        var jqElement = $(element);
+                                        var mac = jqElement.text();
+                                        var hostData = hostList[mac];
+                                        if ( hostData ) {
+                                            console.log(hostData["MAC"] + hostData["HOSTNAME"] + hostData["DESC"] + hostData["IP"]);
+                                            jqElement.after($("<td>").text(mac));
+                                            jqElement.after($("<td>").text(hostData["HOSTNAME"]));
+                                            jqElement.text(hostData["DESC"])
+                                            .after($("<td>").text(hostData["IP"]));
+                                        }
+                                    });
+                                    $( "#tlbHead" ).remove();
+                                    $( "th[width='5%']" ).remove();
+                                    $( "td[width='5%']" ).remove();
+                                    $( "#staTbl" ).css("border", "1px solid #999");            
+                                    $( "#staTbl td" ).removeAttr("width");
+                                    $( "#staTbl tbody" ).prepend("<tr style='font-weight:bold;'><td>Description</td><td>IP</td><td>Hostname</td><td>MAC address</td><td>Current status</td><td>Received packets</td><td>Sent packets</td></tr>");
+                                }, "[LAN_HOST_ENTRY#0,0,0,0,0,0#0,0,0,0,0,0]0,4\r\nleaseTimeRemaining\r\nMACAddress\r\nhostName\r\nIPAddress\r\n", false );
                             }, "[LAN_WLAN_MACTABLEENTRY#0,0,0,0,0,0#1,1,0,0,0,0]0,3\r\nX_TPLINK_Enabled\r\nX_TPLINK_MACAddress\r\nX_TPLINK_Description\r\n", false );
                         }, 250 );});
             } else {
