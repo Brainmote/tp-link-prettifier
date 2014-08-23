@@ -60,7 +60,6 @@ $(document).ready(
                                         var mac = jqElement.text();
                                         var hostData = hostList[mac];
                                         if ( hostData ) {
-                                            console.log(hostData["MAC"] + hostData["HOSTNAME"] + hostData["DESC"] + hostData["IP"]);
                                             jqElement.after($("<td>").text(mac));
                                             jqElement.after($("<td>").text(hostData["HOSTNAME"]));
                                             jqElement.text(hostData["DESC"])
