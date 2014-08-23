@@ -2,9 +2,9 @@
 // @name		TP-LINK Prettifier
 // @author		Giuseppe Bertone, Brainmote s.r.l.s.
 // @namespace	http://www.brainmote.com
-// @version		1.0
+// @version		1.1
 // @updateURL   https://raw.githubusercontent.com/Brainmote/TP-Link-Prettifier/master/tp-link-prettifier.user.js
-// @downloadURL	https://raw.githubusercontent.com/Brainmote/TP-Link-Prettifier/1.0-release/tp-link-prettifier.user.js
+// @downloadURL	https://raw.githubusercontent.com/Brainmote/TP-Link-Prettifier/1.1-release/tp-link-prettifier.user.js
 // @description This script is used to prettify the "Wireless Station Status" page for TP-Link TD-W8970 router. In particular, with this script you can see the description near the MAC address for devices you already registered in the Wireless MAC Filtering page. (you can see a snapshot here https://goo.gl/pBjoLY). Tested on Firmware version: 0.6.0 2.8 v000c.0 Build 130828 Rel.38099n and Hardware version: TD-W8970 v1 00000000
 // @match		http://192.168.1.1/*
 // @copyright	2014+, Brainmote s.r.l.s.
